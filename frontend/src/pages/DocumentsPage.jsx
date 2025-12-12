@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Upload, FileText, Trash2, AlertCircle, CheckCircle, Clock, Bookmark } from 'lucide-react'
 import './DocumentsPage.css'
 import { API_ENDPOINTS } from '../config/api'
+import { authFetch } from '../utils/authFetch'
 
 function DocumentsPage() {
   const [documents, setDocuments] = useState([])
@@ -18,7 +19,7 @@ function DocumentsPage() {
 
   const loadDocuments = async () => {
     try {
-      const response = await fetch(API_ENDPOINTS.documents)
+      const response = await authFetch(API_ENDPOINTS.documents)
       const data = await response.json()
       
       if (data.success) {
@@ -132,7 +133,7 @@ function DocumentsPage() {
       formData.append('document', file)
       formData.append('isPermanent', isPermanent)
 
-      const response = await fetch(API_ENDPOINTS.documentsUpload, {
+      const response = await authFetch(API_ENDPOINTS.documentsUpload, {
         method: 'POST',
         body: formData
       })
@@ -156,7 +157,7 @@ function DocumentsPage() {
     }
 
     try {
-      const response = await fetch(API_ENDPOINTS.documentById(docId), {
+      const response = await authFetch(API_ENDPOINTS.documentById(docId), {
         method: 'DELETE'
       })
 
@@ -187,7 +188,7 @@ function DocumentsPage() {
     }
 
     try {
-      const response = await fetch(API_ENDPOINTS.documentsClearTemp, {
+      const response = await authFetch(API_ENDPOINTS.documentsClearTemp, {
         method: 'DELETE'
       })
 

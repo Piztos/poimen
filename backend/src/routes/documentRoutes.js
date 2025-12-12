@@ -1,6 +1,7 @@
 import express from 'express'
 import multer from 'multer'
 import path from 'path'
+import { verifyToken } from '../middleware/auth.js'
 import {
   processDocument,
   searchDocuments,
@@ -45,7 +46,7 @@ const upload = multer({
  * POST /api/documents/upload
  * Faz upload e processa documento
  */
-router.post('/upload', upload.single('document'), async (req, res) => {
+router.post('/upload', verifyToken, upload.single('document'), async (req, res) => {
   try {
     if (!req.file) {
       return res.status(400).json({ error: 'Nenhum arquivo enviado' })
@@ -73,7 +74,7 @@ router.post('/upload', upload.single('document'), async (req, res) => {
  * POST /api/documents/search
  * Busca documentos relevantes
  */
-router.post('/search', async (req, res) => {
+router.post('/search', verifyToken, async (req, res) => {
   try {
     const { query, topK = 3 } = req.body
     
@@ -100,7 +101,7 @@ router.post('/search', async (req, res) => {
  * GET /api/documents
  * Lista todos os documentos
  */
-router.get('/', async (req, res) => {
+router.get('/', verifyToken, async (req, res) => {
   try {
     const documents = await listDocuments()
     const stats = await getStorageStats()
@@ -123,7 +124,7 @@ router.get('/', async (req, res) => {
  * DELETE /api/documents/:docId
  * Deleta documento
  */
-router.delete('/:docId', async (req, res) => {
+router.delete('/:docId', verifyToken, async (req, res) => {
   try {
     const { docId } = req.params
     
@@ -153,7 +154,7 @@ router.delete('/:docId', async (req, res) => {
  * DELETE /api/documents/temporary/clear
  * Limpa todos os documentos temporários
  */
-router.delete('/temporary/clear', async (req, res) => {
+router.delete('/temporary/clear', verifyToken, async (req, res) => {
   try {
     const result = await clearTemporaryDocuments()
     

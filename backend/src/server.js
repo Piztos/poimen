@@ -5,6 +5,8 @@ import compression from 'compression'
 import dotenv from 'dotenv'
 import historyRoutes from './routes/historyRoutes.js'
 import documentRoutes from './routes/documentRoutes.js'
+import authRoutes from './routes/authRoutes.js'
+import analysisRoutes from './routes/analysisRoutes.js'
 import { initDatabase } from './database/init.js'
 import { initRAG } from './services/documentService.js'
 
@@ -29,6 +31,8 @@ initRAG().then(() => {
 })
 
 // Rotas
+app.use('/api/auth', authRoutes)
+app.use('/api/analysis', analysisRoutes)
 app.use('/api/history', historyRoutes)
 app.use('/api/documents', documentRoutes)
 

@@ -1,29 +1,45 @@
-import React, { useEffect } from 'react'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
+import { AuthProvider, useAuth } from './contexts/AuthContext'
 import Header from './components/Header'
 import Footer from './components/Footer'
+import ProtectedRoute from './components/ProtectedRoute'
+import ApiKeysModal from './components/ApiKeysModal'
+import LandingPage from './pages/LandingPage'
+import LoginPage from './pages/LoginPage'
 import HomePage from './pages/HomePage'
 import AnalysisPage from './pages/AnalysisPage'
 import HistoryPage from './pages/HistoryPage'
 import DocumentsPage from './pages/DocumentsPage'
 import AboutPage from './pages/AboutPage'
 import SettingsPage from './pages/SettingsPage'
+import { API_ENDPOINTS } from './config/api'
 
-function App() {
+function AppContent() {
+  const { user, isAuthenticated } = useAuth();
+  const [showApiKeysModal, setShowApiKeysModal] = useState(false);
+
   useEffect(() => {
+    // Mostrar modal de API keys se usuário não configurou ainda
+    if (isAuthenticated && user && !user.hasConfiguredKeys) {
+      setShowApiKeysModal(true);
+    }
+  }, [isAuthenticated, user]);
+
+  useEffect(() => {
+    if (!isAuthenticated) return;
+
     // Marca que a sessão está ativa
     sessionStorage.setItem('poimenSessionActive', 'true')
 
     // Cleanup ao fechar navegador/aba
     const handleBeforeUnload = async () => {
-      // Usa sendBeacon para garantir que a requisição seja enviada
       const url = API_ENDPOINTS.documentsClearTemp
       const blob = new Blob([JSON.stringify({})], { type: 'application/json' })
       
       if (navigator.sendBeacon) {
         navigator.sendBeacon(url, blob)
       } else {
-        // Fallback para navegadores antigos
         fetch(url, {
           method: 'DELETE',
           keepalive: true
@@ -38,25 +54,54 @@ function App() {
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload)
     }
-  }, [])
+  }, [isAuthenticated])
 
   return (
-    <Router>
-      <div className="app">
-        <Header />
-        <main className="main-content">
+    <>
+      <Router>
+        <div className="app">
           <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/analysis" element={<AnalysisPage />} />
-            <Route path="/history" element={<HistoryPage />} />
-            <Route path="/documents" element={<DocumentsPage />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/settings" element={<SettingsPage />} />
+            {/* Public routes */}
+            <Route path="/" element={isAuthenticated ? <Navigate to="/app" /> : <LandingPage />} />
+            <Route path="/login" element={isAuthenticated ? <Navigate to="/app" /> : <LoginPage />} />
+
+            {/* Protected routes */}
+            <Route
+              path="/app/*"
+              element={
+                <ProtectedRoute>
+                  <Header />
+                  <main className="main-content">
+                    <Routes>
+                      <Route path="/" element={<HomePage />} />
+                      <Route path="/analysis" element={<AnalysisPage />} />
+                      <Route path="/history" element={<HistoryPage />} />
+                      <Route path="/documents" element={<DocumentsPage />} />
+                      <Route path="/about" element={<AboutPage />} />
+                      <Route path="/settings" element={<SettingsPage />} />
+                    </Routes>
+                  </main>
+                  <Footer />
+                </ProtectedRoute>
+              }
+            />
           </Routes>
-        </main>
-        <Footer />
-      </div>
-    </Router>
+        </div>
+      </Router>
+
+      <ApiKeysModal
+        isOpen={showApiKeysModal}
+        onClose={() => setShowApiKeysModal(false)}
+      />
+    </>
+  )
+}
+
+function App() {
+  return (
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
   )
 }
 

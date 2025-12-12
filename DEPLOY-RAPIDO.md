@@ -12,7 +12,7 @@ git commit -m "Poimen v1.0 - Sistema de análise bíblica com RAG"
 Crie repositório em: https://github.com/new
 
 ```powershell
-git remote add origin https://github.com/SEU-USUARIO/poimen.git
+git remote add origin https://github.com/Piztos/poimen.git
 git branch -M main
 git push -u origin main
 ```
@@ -34,29 +34,43 @@ git push -u origin main
 6. **Create Web Service**
 7. **COPIE A URL**: https://poimen-backend.onrender.com
 
-## 3️⃣ Deploy Frontend na Vercel (5 minutos)
+## 3️⃣ Deploy Frontend no cPanel (5 minutos)
 
-1. Acesse: https://vercel.com/
-2. **New Project** → Importar do GitHub → `poimen`
-3. Configurações:
-   - **Framework Preset**: Vite
-   - **Root Directory**: `frontend`
-   - **Build Command**: `npm run build`
-   - **Output Directory**: `dist`
-4. **Environment Variables**:
-   - `VITE_API_URL` = `https://poimen-backend.onrender.com` (URL copiada)
-5. **Deploy**
+1. **Configure a URL do backend**:
+```powershell
+cd frontend
+```
+
+Crie arquivo `.env`:
+```
+VITE_API_URL=https://poimen-backend.onrender.com
+```
+
+2. **Rebuilde o frontend**:
+```powershell
+npm run build
+```
+
+3. **Acesse seu cPanel**:
+   - URL: https://poimen.com.br:2083
+   - Painel: jupiter
+   - **File Manager** → **public_html**
+
+4. **Limpe e faça upload**:
+   - Delete todos os arquivos em `public_html`
+   - Upload todos os arquivos de `frontend/dist/*`
+   - ⚠️ Arquivos dentro de dist, não a pasta dist!
 
 ## ✅ PRONTO!
 
 Seu site estará online em:
-- **Frontend**: https://poimen.vercel.app
+- **Frontend**: https://poimen.com.br
 - **Backend**: https://poimen-backend.onrender.com
 
 ## 📝 Pós-Deploy
 
 Volte ao Render e atualize a variável:
-- `FRONTEND_URL` = `https://poimen.vercel.app`
+- `FRONTEND_URL` = `https://poimen.com.br`
 
 ---
 

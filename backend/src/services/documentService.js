@@ -401,3 +401,30 @@ export async function getStorageStats() {
     isNearLimit: permanentSize > 120 * 1024 * 1024 // Aviso aos 120MB
   }
 }
+
+/**
+ * Obtém contexto RAG para uma query
+ * Retorna string com contexto relevante dos documentos
+ */
+export async function getRAGContext(query, topK = 3) {
+  try {
+    const results = await searchDocuments(query, topK)
+    
+    if (results.length === 0) {
+      return ''
+    }
+    
+    // Formata resultados em texto contextual
+    const context = results
+      .map((result, idx) => 
+        `[Documento ${idx + 1}: ${result.metadata.filename}]\n${result.text}`
+      )
+      .join('\n\n---\n\n')
+    
+    return context
+  } catch (error) {
+    console.error('Erro ao buscar contexto RAG:', error)
+    return ''
+  }
+}
+
