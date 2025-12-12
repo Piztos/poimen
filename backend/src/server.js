@@ -47,13 +47,22 @@ app.use(compression())
 app.use(express.json({ limit: '10mb' }))
 app.use(express.urlencoded({ extended: true, limit: '10mb' }))
 
-// Inicializar banco de dados e RAG
+// Inicializar banco de dados
 initDatabase()
-initRAG().then(() => {
-  console.log('📚 Sistema RAG pronto')
-}).catch(err => {
-  console.error('❌ Erro ao inicializar RAG:', err)
-})
+
+// Inicializar RAG de forma lazy (não bloqueia startup)
+// Importante para Render free tier com limite de memória
+if (process.env.ENABLE_RAG !== 'false') {
+  console.log('⏳ Inicializando sistema RAG em background...')
+  initRAG().then(() => {
+    console.log('📚 Sistema RAG pronto')
+  }).catch(err => {
+    console.warn('⚠️  Sistema RAG indisponível (limitação de memória):', err.message)
+    console.warn('💡 O sistema funciona normalmente sem RAG. Para ativar, configure ENABLE_RAG=true')
+  })
+} else {
+  console.log('ℹ️  Sistema RAG desabilitado (ENABLE_RAG=false)')
+}
 
 // Rotas
 app.use('/api/auth', authRoutes)
