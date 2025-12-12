@@ -15,20 +15,33 @@ dotenv.config()
 const app = express()
 const PORT = process.env.PORT || 5000
 
+// CORS configuração - DEVE vir ANTES de outras rotas
+const allowedOrigins = [
+  'http://localhost:3000',
+  'http://localhost:5173',
+  'https://poimen.com.br',
+  'https://www.poimen.com.br'
+]
+
+app.use(cors({
+  origin: function (origin, callback) {
+    // Permite requisições sem origin (mobile apps, postman, etc)
+    if (!origin) return callback(null, true)
+    if (allowedOrigins.indexOf(origin) === -1) {
+      return callback(new Error('CORS not allowed'), false)
+    }
+    return callback(null, true)
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  exposedHeaders: ['Content-Type', 'Authorization'],
+  optionsSuccessStatus: 200
+}))
+
 // Middlewares
 app.use(helmet({
   crossOriginResourcePolicy: { policy: "cross-origin" }
-}))
-app.use(cors({
-  origin: [
-    'http://localhost:3000',
-    'http://localhost:5173',
-    'https://poimen.com.br',
-    'https://www.poimen.com.br'
-  ],
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
 }))
 app.use(compression())
 app.use(express.json({ limit: '10mb' }))
