@@ -2,10 +2,8 @@ import React, { useState } from 'react'
 import { Copy, ExternalLink, Check, AlertCircle, Maximize2 } from 'lucide-react'
 import { marked } from 'marked'
 import DOMPurify from 'dompurify'
-import { getAllAIConfigs } from '../services/aiService'
+import { AI_CONFIGS } from '../services/aiService'
 import './AIResultsPanel.css'
-
-const AI_CONFIGS = getAllAIConfigs()
 
 function AIResultsPanel({ results, onUpdateResult }) {
   const [copiedIndex, setCopiedIndex] = useState(null)
