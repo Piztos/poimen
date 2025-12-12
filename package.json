@@ -1,0 +1,35 @@
+{
+  "name": "poimen",
+  "version": "1.0.0",
+  "description": "Sistema completo multiplataforma para estudos bíblicos reformados com múltiplas IAs gratuitas",
+  "main": "index.js",
+  "scripts": {
+    "dev": "npm-run-all --parallel dev:frontend dev:backend",
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev:backend": "cd backend && npm run dev",
+    "build": "npm run build:frontend && npm run build:backend",
+    "build:frontend": "cd frontend && npm run build",
+    "build:backend": "cd backend && npm run build",
+    "build:desktop": "cd desktop && npm run build",
+    "build:mobile": "cd mobile && npm run build",
+    "install:all": "npm install && cd frontend && npm install && cd ../backend && npm install && cd ../desktop && npm install && cd ../mobile && npm install",
+    "start": "npm-run-all --parallel start:frontend start:backend",
+    "start:frontend": "cd frontend && npm start",
+    "start:backend": "cd backend && npm start"
+  },
+  "keywords": [
+    "biblia",
+    "teologia",
+    "reformada",
+    "ia",
+    "gemini",
+    "chatgpt",
+    "deepseek",
+    "copilot"
+  ],
+  "author": "Poimen Team",
+  "license": "MIT",
+  "devDependencies": {
+    "npm-run-all": "^4.1.5"
+  }
+}

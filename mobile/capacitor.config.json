@@ -1,0 +1,30 @@
+{
+  "appId": "com.poimen.app",
+  "appName": "Poimén",
+  "webDir": "../frontend/dist",
+  "bundledWebRuntime": false,
+  "server": {
+    "androidScheme": "https"
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 2000,
+      "backgroundColor": "#1a1a2e",
+      "androidSplashResourceName": "splash",
+      "iosSplashResourceName": "Splash"
+    },
+    "StatusBar": {
+      "style": "dark",
+      "backgroundColor": "#1a1a2e"
+    }
+  },
+  "android": {
+    "allowMixedContent": true,
+    "captureInput": true,
+    "webContentsDebuggingEnabled": true
+  },
+  "ios": {
+    "contentInset": "automatic",
+    "limitsNavigationsToAppBoundDomains": false
+  }
+}

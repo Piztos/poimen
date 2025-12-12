@@ -1,0 +1,14 @@
+# Arquivos pesados que não devem ser distribuídos
+node_modules/
+*/node_modules/
+backend/.cache/
+backend/uploads/
+*.sqlite
+*.db
+
+# Desenvolvimento
+.env
+.env.local
+*.log
+.vscode/
+.idea/

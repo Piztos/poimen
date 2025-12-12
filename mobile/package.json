@@ -1,0 +1,37 @@
+{
+  "name": "poimen-mobile",
+  "version": "1.0.0",
+  "description": "Aplicação mobile Poimén (Capacitor)",
+  "main": "index.js",
+  "scripts": {
+    "init": "cap init",
+    "add:android": "cap add android",
+    "add:ios": "cap add ios",
+    "sync": "cap sync",
+    "sync:android": "cap sync android",
+    "sync:ios": "cap sync ios",
+    "open:android": "cap open android",
+    "open:ios": "cap open ios",
+    "build:android": "cap build android",
+    "build:ios": "cap build ios",
+    "copy": "cap copy",
+    "update": "cap update"
+  },
+  "keywords": ["bible", "theology", "reformed", "mobile", "capacitor"],
+  "author": "Poimen Team",
+  "license": "MIT",
+  "devDependencies": {
+    "@capacitor/cli": "^5.6.0"
+  },
+  "dependencies": {
+    "@capacitor/core": "^5.6.0",
+    "@capacitor/android": "^5.6.0",
+    "@capacitor/ios": "^5.6.0",
+    "@capacitor/app": "^5.0.6",
+    "@capacitor/browser": "^5.1.0",
+    "@capacitor/filesystem": "^5.1.4",
+    "@capacitor/share": "^5.0.6",
+    "@capacitor/splash-screen": "^5.0.6",
+    "@capacitor/status-bar": "^5.0.6"
+  }
+}

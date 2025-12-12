@@ -1,0 +1,73 @@
+# 🚀 Deploy Rápido do Poimen - 3 Passos
+
+## 1️⃣ Subir para GitHub (5 minutos)
+
+```powershell
+cd "C:\pav\Fluxo de Atendimento\Pessoal\python\novos_programas\Poimen"
+git init
+git add .
+git commit -m "Poimen v1.0 - Sistema de análise bíblica com RAG"
+```
+
+Crie repositório em: https://github.com/new
+
+```powershell
+git remote add origin https://github.com/SEU-USUARIO/poimen.git
+git branch -M main
+git push -u origin main
+```
+
+## 2️⃣ Deploy Backend no Render (10 minutos)
+
+1. Acesse: https://render.com/
+2. **New** → **Web Service**
+3. **Connect repository** → Selecione `poimen`
+4. Configurações:
+   - **Name**: `poimen-backend`
+   - **Root Directory**: `backend`
+   - **Build Command**: `npm install`
+   - **Start Command**: `npm start`
+   - **Plan**: Free
+5. **Environment Variables**:
+   - `NODE_ENV` = `production`
+   - `FRONTEND_URL` = (deixe vazio por enquanto)
+6. **Create Web Service**
+7. **COPIE A URL**: https://poimen-backend.onrender.com
+
+## 3️⃣ Deploy Frontend na Vercel (5 minutos)
+
+1. Acesse: https://vercel.com/
+2. **New Project** → Importar do GitHub → `poimen`
+3. Configurações:
+   - **Framework Preset**: Vite
+   - **Root Directory**: `frontend`
+   - **Build Command**: `npm run build`
+   - **Output Directory**: `dist`
+4. **Environment Variables**:
+   - `VITE_API_URL` = `https://poimen-backend.onrender.com` (URL copiada)
+5. **Deploy**
+
+## ✅ PRONTO!
+
+Seu site estará online em:
+- **Frontend**: https://poimen.vercel.app
+- **Backend**: https://poimen-backend.onrender.com
+
+## 📝 Pós-Deploy
+
+Volte ao Render e atualize a variável:
+- `FRONTEND_URL` = `https://poimen.vercel.app`
+
+---
+
+## ⚠️ IMPORTANTE
+
+**Backend no Render (grátis):**
+- Dorme após 15min sem uso
+- Primeira requisição demora ~30s para "acordar"
+- Depois funciona normalmente
+
+**Alternativa SEM LIMITAÇÃO:** Railway ($ limitado mas mais rápido)
+- https://railway.app
+- Deploy em 1 clique do GitHub
+- Não dorme
